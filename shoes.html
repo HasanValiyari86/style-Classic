@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>کفش‌ها - استایل کلاسیک</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
+</head>
+<body>
+  <button class="cart-toggle-btn" onclick="toggleCart()">🛒 سبد خرید</button>
+
+  <div id="side-menu" class="side-menu">
+    <ul>
+      <li><a href="index.html#pants-section">شلوارها</a></li>
+      <li><a href="index.html#shirts-section">پیراهن‌ها</a></li>
+      <li><a href="index.html#tshirts-section">تی‌شرت‌ها</a></li>
+      <li><a href="index.html#shoes-section">کفش‌ها</a></li>
+      <li><a href="index.html#about">درباره ما</a></li>
+    </ul>
+  </div>
+
+  <header class="hero">
+    <nav class="navbar">
+      <button class="menu-toggle" onclick="toggleMenu()">|||</button>
+      <div class="logo">استایل کلاسیک</div>
+    </nav>
+    <div class="hero-content">
+      <h1>کفش‌های مردانه</h1>
+      <p>راحتی و کیفیت بی‌نظیر برای قدم‌هایت</p>
+    </div>
+  </header>
+
+  <section class="products">
+    <div class="product">
+      <img src="https://via.placeholder.com/150x150?text=کفش+چرم" alt="کفش چرم">
+      <h3>کفش چرم رسمی</h3>
+      <p>قیمت: ۱,۵۰۰,۰۰۰ تومان</p>
+      <label>سایز:
+        <select id="size-shoe1">
+          <option>41</option>
+          <option>42</option>
+          <option>43</option>
+        </select>
+      </label>
+      <button onclick="addToCart('کفش چرم رسمی', 1500000, document.getElementById('size-shoe1').value)">افزودن</button>
+    </div>
+
+    <div class="product">
+      <img src="https://via.placeholder.com/150x150?text=کفش+روزمره" alt="کفش روزمره">
+      <h3>کفش روزمره راحتی</h3>
+      <p>قیمت: ۱,۲۰۰,۰۰۰ تومان</p>
+      <label>سایز:
+        <select id="size-shoe2">
+          <option>41</option>
+          <option>42</option>
+          <option>43</option>
+        </select>
+      </label>
+      <button onclick="addToCart('کفش روزمره راحتی', 1200000, document.getElementById('size-shoe2').value)">افزودن</button>
+    </div>
+  </section>
+
+  <div id="cart-panel" class="cart-panel">
+    <h2>سبد خرید</h2>
+    <ul id="cart-list"></ul>
+    <p id="total">مجموع: ۰ تومان</p>
+    <button onclick="checkout()">پرداخت</button>
+    <div id="payment-info"></div>
+  </div>
+
+  <script>
+    let cart = [];
+    let total = 0;
+
+    window.onload = function () {
+      const storedCart = localStorage.getItem("cart");
+      const storedTotal = localStorage.getItem("total");
+
+      if (storedCart) cart = JSON.parse(storedCart);
+      if (storedTotal) total = parseInt(storedTotal);
+
+      updateCartUI();
+    };
+
+    function addToCart(name, price, size) {
+      cart.push({ name, price, size });
+      total += price;
+      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem("total", total.toString());
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const cartList = document.getElementById("cart-list");
+      const totalEl = document.getElementById("total");
+      cartList.innerHTML = "";
+      cart.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = `${item.name} - سایز: ${item.size} - قیمت: ${item.price.toLocaleString()} تومان`;
+        cartList.appendChild(li);
+      });
+      totalEl.textContent = `مجموع: ${total.toLocaleString()} تومان`;
+    }
+
+    function checkout() {
+      const paymentInfo = document.getElementById("payment-info");
+      paymentInfo.innerHTML =
+        `<p>مبلغ قابل پرداخت: ${total.toLocaleString()} تومان</p>
+        <p>لطفاً مبلغ را به شماره کارت زیر واریز کنید:</p>
+        <p><strong>6037-9911-2345-6789</strong> به نام فروشگاه لباس</p>`;
+    }
+
+    function toggleCart() {
+      const panel = document.getElementById("cart-panel");
+      panel.classList.toggle("open");
+    }
+
+    function toggleMenu() {
+      document.getElementById("side-menu").classList.toggle("open");
+    }
+  </script>
+</body>
+</html>
